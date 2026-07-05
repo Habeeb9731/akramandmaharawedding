@@ -1,0 +1,302 @@
+@import "tailwindcss";
+
+@theme {
+  --color-emerald-royal: #0f5b4c;
+  --color-emerald-deep: #0a3f35;
+  --color-emerald-night: #062720;
+  --color-emerald-abyss: #041a16;
+  --color-gold: #d4af37;
+  --color-gold-light: #f0d97c;
+  --color-gold-pale: #f7ecc8;
+  --color-ivory: #f8f6f1;
+  --color-maroon: #5b1f2b;
+  --color-maroon-deep: #3d141d;
+  --color-beige: #eadbc8;
+  --color-blush: #e8c8c0;
+
+  --font-heading: var(--font-playfair), "Playfair Display", serif;
+  --font-body: var(--font-cormorant), "Cormorant Garamond", serif;
+  --font-arabic: var(--font-amiri), "Amiri", serif;
+  --font-script: var(--font-vibes), "Great Vibes", cursive;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-shimmer: shimmer 4s linear infinite;
+  --animate-flicker: flicker 3.4s ease-in-out infinite;
+  --animate-twinkle: twinkle 3s ease-in-out infinite;
+  --animate-glow-pulse: glowPulse 4s ease-in-out infinite;
+  --animate-spin-very-slow: spin 60s linear infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    22% { opacity: 0.82; }
+    45% { opacity: 0.95; }
+    63% { opacity: 0.78; }
+    82% { opacity: 0.92; }
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.25; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.55; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.12); }
+  }
+}
+
+/* Burgues Script — drop the licensed file at /public/fonts/BurguesScript.woff2
+   (or .otf) and it takes over automatically; otherwise the elegant
+   Herr Von Muellerhoff fallback is used. */
+@font-face {
+  font-family: "Burgues Script";
+  src:
+    url("/fonts/BurguesScript.woff2") format("woff2"),
+    url("/fonts/BurguesScript.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --font-names: "Burgues Script", var(--font-burgues-fallback), "Great Vibes",
+    cursive;
+}
+
+/* Thickens hairline script glyphs so they read medium-weight. */
+.script-medium {
+  -webkit-text-stroke: 0.7px #d9b64a;
+  paint-order: stroke fill;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background: var(--color-emerald-abyss);
+  color: var(--color-ivory);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(212, 175, 55, 0.35);
+  color: #fff;
+}
+
+/* ── Custom scrollbar ─────────────────────────────── */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #041a16;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#d4af37, #8a6d1f);
+  border-radius: 99px;
+}
+
+/* ── Gold shimmer text ────────────────────────────── */
+.gold-text {
+  background: linear-gradient(
+    100deg,
+    #8a6d1f 0%,
+    #d4af37 22%,
+    #fdf0b8 40%,
+    #ffffff 50%,
+    #fdf0b8 60%,
+    #d4af37 78%,
+    #8a6d1f 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 5s linear infinite;
+}
+
+.gold-text-static {
+  background: linear-gradient(160deg, #f0d97c 0%, #d4af37 45%, #a3812a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ── Glassmorphism ────────────────────────────────── */
+.glass {
+  background: linear-gradient(
+    135deg,
+    rgba(248, 246, 241, 0.08),
+    rgba(248, 246, 241, 0.03)
+  );
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-deep {
+  background: linear-gradient(
+    135deg,
+    rgba(4, 26, 22, 0.72),
+    rgba(4, 26, 22, 0.45)
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Islamic arch card shape ──────────────────────── */
+.arch-top {
+  border-radius: 50% 50% 1.25rem 1.25rem / 28% 28% 1.25rem 1.25rem;
+}
+
+.arch-full {
+  border-radius: 50% 50% 0 0 / 38% 38% 0 0;
+}
+
+/* ── Gold border frame with corner accents ────────── */
+.gold-frame {
+  position: relative;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+.gold-frame::before,
+.gold-frame::after {
+  content: "";
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border-color: #d4af37;
+  border-style: solid;
+}
+.gold-frame::before {
+  top: -2px;
+  left: -2px;
+  border-width: 2px 0 0 2px;
+}
+.gold-frame::after {
+  bottom: -2px;
+  right: -2px;
+  border-width: 0 2px 2px 0;
+}
+
+/* ── Radial candle-glow vignette used across sections */
+.candle-vignette {
+  background:
+    radial-gradient(
+      ellipse 70% 55% at 50% 40%,
+      rgba(212, 175, 55, 0.09),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 100% 100% at 50% 100%,
+      rgba(91, 31, 43, 0.25),
+      transparent 60%
+    );
+}
+
+/* ── Jaali (lattice) pattern overlay ──────────────── */
+.jaali-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='56' height='56' viewBox='0 0 56 56' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23d4af37' stroke-width='0.8'%3E%3Cpath d='M28 2 L44 14 L44 34 L28 46 L12 34 L12 14 Z'/%3E%3Ccircle cx='28' cy='24' r='6'/%3E%3Cpath d='M28 46 L28 56 M28 0 L28 2 M0 42 L12 34 M44 34 L56 42 M0 6 L12 14 M44 14 L56 6'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 56px 56px;
+}
+
+/* ── Star-eight pattern (Islamic geometry) ────────── */
+.star-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23d4af37' stroke-width='0.7'%3E%3Cpath d='M40 8 L48 24 L64 16 L56 32 L72 40 L56 48 L64 64 L48 56 L40 72 L32 56 L16 64 L24 48 L8 40 L24 32 L16 16 L32 24 Z'/%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 80px 80px;
+}
+
+/* ── Magnetic / lift buttons ──────────────────────── */
+.btn-gold {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 2rem;
+  border: 1px solid rgba(212, 175, 55, 0.6);
+  color: var(--color-gold-pale);
+  font-family: var(--font-heading);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  border-radius: 999px;
+  overflow: hidden;
+  transition: color 0.45s ease, box-shadow 0.45s ease, transform 0.3s ease;
+  background: rgba(212, 175, 55, 0.06);
+}
+.btn-gold::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, #a3812a, #d4af37 45%, #f0d97c);
+  transform: translateY(101%);
+  transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: -1;
+  border-radius: inherit;
+}
+.btn-gold:hover {
+  color: #041a16;
+  box-shadow: 0 12px 34px rgba(212, 175, 55, 0.35);
+}
+.btn-gold:hover::before {
+  transform: translateY(0);
+}
+
+/* ── 3D hover card ────────────────────────────────── */
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s ease;
+  will-change: transform;
+}
+
+/* ── Reveal defaults (GSAP sets final state) ──────── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(48px);
+  filter: blur(10px);
+  will-change: opacity, transform, filter;
+}
+
+/* ── Reduced motion ───────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
