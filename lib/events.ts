@@ -8,6 +8,9 @@ export type WeddingEvent = {
   date: string;
   day: string;
   time: string;
+  /** machine-readable start, used by the Add-to-Calendar button */
+  startISO: string;
+  durationHours: number;
   venue: string;
   venueLine2?: string;
   mapsUrl: string;
@@ -27,6 +30,8 @@ export const events: WeddingEvent[] = [
     date: "01 August 2026",
     day: "Saturday",
     time: "11:30 AM",
+    startISO: "2026-08-01T11:30:00+05:30",
+    durationHours: 3,
     venue: "Indian Auditorium",
     venueLine2: "Nerlakatte, Mani",
     mapsUrl: "https://maps.google.com/?q=R49M%2BJ4V+Peraje",

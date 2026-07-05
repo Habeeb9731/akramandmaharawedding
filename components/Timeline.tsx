@@ -5,6 +5,55 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { events, type WeddingEvent } from "@/lib/events";
 
+/* Android jumps straight into Google Calendar; everything else downloads
+   an .ics that opens in Apple Calendar / Outlook. */
+function addToCalendar(event: WeddingEvent) {
+  const start = new Date(event.startISO);
+  const end = new Date(start.getTime() + event.durationHours * 3600_000);
+  const stamp = (d: Date) => d.toISOString().replace(/[-:]|\.\d{3}/g, "");
+  const title = `${event.name} — Muhammad Akram & Mahara Aysha`;
+  const location = event.venueLine2
+    ? `${event.venue}, ${event.venueLine2}`
+    : event.venue;
+
+  if (/android/i.test(navigator.userAgent)) {
+    const url =
+      "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      `&text=${encodeURIComponent(title)}` +
+      `&dates=${stamp(start)}/${stamp(end)}` +
+      `&details=${encodeURIComponent(`${event.tagline}\nMap: ${event.mapsUrl}`)}` +
+      `&location=${encodeURIComponent(location)}`;
+    window.open(url, "_blank", "noopener");
+    return;
+  }
+
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Akram & Mahara//Wedding Invitation//EN",
+    "BEGIN:VEVENT",
+    `UID:${event.id}@akramandmaharawedding`,
+    `DTSTAMP:${stamp(new Date())}`,
+    `DTSTART:${stamp(start)}`,
+    `DTEND:${stamp(end)}`,
+    `SUMMARY:${title}`,
+    `DESCRIPTION:${event.tagline}\\nMap: ${event.mapsUrl}`,
+    `LOCATION:${location}`,
+    `URL:${event.mapsUrl}`,
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${event.id}-akram-and-mahara.ics`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 /* Eight-petal badge — two stacked rounded squares, one rotated 45°. */
 function PetalBadge({ children }: { children: React.ReactNode }) {
   return (
@@ -149,6 +198,22 @@ function TimelineCard({ event }: { event: WeddingEvent }) {
               </span>
               <LeafOrnament className="h-4 w-6 text-gold-light/80 transition-transform duration-500 group-hover:translate-x-1" />
             </a>
+
+            <button
+              type="button"
+              onClick={() => addToCalendar(event)}
+              className="group flex cursor-pointer items-center justify-center gap-3 rounded-full border border-gold/55 bg-[#052a20]/40 px-6 py-3.5 shadow-[inset_0_1px_0_rgba(240,217,124,0.1)] transition-all duration-500 hover:border-gold hover:bg-gold/15 hover:shadow-[0_0_30px_rgba(212,175,55,0.3)]"
+            >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 text-gold-light" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />
+                <path d="M3.5 9.5h17M8 2.8v4M16 2.8v4" strokeLinecap="round" />
+                <path d="M12 12.5v5M9.5 15h5" strokeLinecap="round" />
+              </svg>
+              <span className="font-[family-name:var(--font-heading)] text-sm uppercase tracking-[0.18em] text-gold-pale">
+                Add to Calendar
+              </span>
+              <LeafOrnament className="h-4 w-6 text-gold-light/80 transition-transform duration-500 group-hover:translate-x-1" />
+            </button>
           </div>
         </div>
       </motion.div>
