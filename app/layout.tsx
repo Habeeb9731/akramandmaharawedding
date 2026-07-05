@@ -46,6 +46,10 @@ const burguesFallback = Allura({
 });
 
 export const metadata: Metadata = {
+  // Netlify injects URL at build time; the fallback covers local builds
+  metadataBase: new URL(
+    process.env.URL ?? "https://akramandmaharawedding.netlify.app"
+  ),
   title: "Muhammad Akram ♥ Mahara Aysha — Wedding Invitation",
   description:
     "Together with their families, Muhammad Akram & Mahara Aysha joyfully invite you to celebrate their Nikah — 01 August 2026.",
@@ -63,6 +67,22 @@ export const metadata: Metadata = {
     description:
       "Two hearts. One faith. One beautiful beginning. Join us — 01 August 2026.",
     type: "website",
+    siteName: "Akram & Mahara — Wedding Invitation",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 847,
+        height: 1200,
+        alt: "Muhammad Akram & Mahara Aysha — Wedding Invitation, 01 August 2026",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Muhammad Akram ♥ Mahara Aysha",
+    description:
+      "Two hearts. One faith. One beautiful beginning. Join us — 01 August 2026.",
+    images: ["/og-image.jpg"],
   },
 };
 
